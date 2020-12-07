@@ -1,24 +1,23 @@
 import React from 'react';
-import { withTranslation } from 'react-i18next';
 import PropTypes from 'prop-types';
-import s from './Roundabout.scss';
+import Vehicle from '../Vehicle';
 
 class Roundabout extends React.Component {
   static propTypes = {
-    t: PropTypes.func,
+    className: PropTypes.string,
   };
 
   render() {
-    const { t } = this.props;
+    const { className, children } = this.props;
 
     return (
-      <div className={s.root}>
-        <h2 className={s.title} data-hook="app-title">
-          {t('app.title')}
-        </h2>
+      <div className={className}>
+        {[children].map((child, key) => (
+          <Vehicle key={key}>{child}</Vehicle>
+        ))}
       </div>
     );
   }
 }
 
-export default withTranslation()(Roundabout);
+export default Roundabout;
