@@ -79,7 +79,7 @@ class Roundabout extends React.Component {
     return offsets.indexOf(Math.min(...offsets));
   };
 
-  getPartiallyObscuredSlides = () => {
+  getPartiallyObscuredVehicles = () => {
     const { roundabout } = this;
     const findFirstObscuredChildIndex = [...roundabout.children].findIndex(
       (child, i, children) =>
@@ -158,9 +158,10 @@ class Roundabout extends React.Component {
     const { childCount, props } = this;
     const { infinite } = props;
 
-    const [_, nextSlide] = this.getPartiallyObscuredSlides();
-    const nextInfinteSlide = nextSlide === childCount - 1 ? 0 : nextSlide;
-    return this.slideTo(infinite ? nextInfinteSlide : nextSlide);
+    const [_, nextVehicle] = this.getPartiallyObscuredVehicles();
+    const nextInfiniteVehicle =
+      nextVehicle === childCount - 1 ? 0 : nextVehicle;
+    return this.slideTo(infinite ? nextInfiniteVehicle : nextVehicle);
   };
 
   prev = () => {
@@ -169,10 +170,10 @@ class Roundabout extends React.Component {
     const { infinite } = props;
     const firstIndex = 0;
 
-    const prevSlide = Math.max(activeIndex - 1, firstIndex);
-    const prevInfinteSlide =
-      prevSlide === activeIndex ? childCount - 1 : prevSlide;
-    return this.slideTo(infinite ? prevInfinteSlide : prevSlide);
+    const prevVehicle = Math.max(activeIndex - 1, firstIndex);
+    const prevInfiniteVehicle =
+      prevVehicle === activeIndex ? childCount - 1 : prevVehicle;
+    return this.slideTo(infinite ? prevInfiniteVehicle : prevVehicle);
   };
 
   setRef = (r) => {
