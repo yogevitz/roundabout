@@ -52,12 +52,6 @@ class Roundabout extends React.Component {
         ? this.roundabout.children.length
         : 0;
 
-    if (this.shouldSelfCorrect()) {
-      const nearestSlideIndex = this.getNearestSlideIndex();
-      nearestSlideIndex !== this.state.activeIndex &&
-        this.slideTo(this.getNearestSlideIndex()).catch(nop);
-    }
-
     if (prevProps.slideTo !== this.props.slideTo) {
       this.slideTo(this.props.slideTo).catch(nop);
     }
@@ -68,17 +62,6 @@ class Roundabout extends React.Component {
     const nextPropValues = [...values(nextProps), isAnimating];
     return !nextPropValues.every((val, i) => val === propValues[i]);
   }
-
-  shouldSelfCorrect = () =>
-    !this.props.preventAutoCorrect && !this.state.isAnimating;
-
-  getNearestSlideIndex = () => {
-    const { children, scrollLeft } = this.roundabout;
-    const offsets = [].slice
-      .call(children)
-      .map(({ offsetLeft }) => Math.abs(offsetLeft - scrollLeft));
-    return offsets.indexOf(Math.min(...offsets));
-  };
 
   getPartiallyObscuredVehicles = () => {
     const { roundabout } = this;
