@@ -20,7 +20,6 @@ class Roundabout extends React.Component {
     animationDuration: TRANSITION_SPEED,
     gutter: 0,
     onVehicleClick: nop,
-    preventAutoCorrect: false,
     startOffset: 0,
     startAt: 0,
     style: {},
@@ -42,10 +41,6 @@ class Roundabout extends React.Component {
         : 0;
 
     this.slideTo(this.props.startAt, { immediate: true }).catch(nop);
-  }
-
-  componentWillUnmount() {
-    this.eventListeners.forEach((fn) => typeof fn === 'function' && fn());
   }
 
   componentDidUpdate(prevProps) {
@@ -174,7 +169,6 @@ class Roundabout extends React.Component {
       easing,
       infinite,
       gutter,
-      preventAutoCorrect,
       startOffset,
       onVehicleClick,
       vehicleClass,
