@@ -19,7 +19,7 @@ class Roundabout extends React.Component {
     gutter: '1em',
     onVehicleClick: nop,
     preventAutoCorrect: false,
-    snapPositionOffset: 0,
+    startOffset: 0,
     startAt: 0,
     style: {},
   };
@@ -114,13 +114,12 @@ class Roundabout extends React.Component {
       easing,
       animationDuration: duration,
       infinite,
-      snapPositionOffset,
+      startOffset,
     } = this.props;
     const { children, scrollLeft } = this.roundabout;
     const slideIndex = normalizeIndex(index, this.childCount, infinite);
     const startingIndex = this.state.activeIndex;
-    const delta =
-      children[slideIndex].offsetLeft - scrollLeft - snapPositionOffset;
+    const delta = children[slideIndex].offsetLeft - scrollLeft - startOffset;
     if (startingIndex !== slideIndex) {
       beforeSlide(index);
     }
@@ -190,7 +189,7 @@ class Roundabout extends React.Component {
       infinite,
       gutter,
       preventAutoCorrect,
-      snapPositionOffset,
+      startOffset,
       onVehicleClick,
       vehicleClass,
       slideTo,
