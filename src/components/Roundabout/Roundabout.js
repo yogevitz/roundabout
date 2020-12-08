@@ -43,9 +43,9 @@ export default class Roundabout extends React.Component {
     }
   }
 
-  shouldComponentUpdate(nextProps, { isAnimating }) {
+  shouldComponentUpdate(nextProps, nextState) {
     const propValues = [...values(this.props), this.state.isAnimating];
-    const nextPropValues = [...values(nextProps), isAnimating];
+    const nextPropValues = [...values(nextProps), nextState.isAnimating];
     return !nextPropValues.every((val, i) => val === propValues[i]);
   }
 
