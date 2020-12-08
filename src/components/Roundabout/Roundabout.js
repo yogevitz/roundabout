@@ -168,9 +168,8 @@ class Roundabout extends React.Component {
     const { childCount, state, props } = this;
     const { activeIndex } = state;
     const { infinite } = props;
-    const firstIndex = 0;
 
-    const prevVehicle = Math.max(activeIndex - 1, firstIndex);
+    const [prevVehicle, _] = this.getPartiallyObscuredVehicles();
     const prevInfiniteVehicle =
       prevVehicle === activeIndex ? childCount - 1 : prevVehicle;
     return this.slideTo(infinite ? prevInfiniteVehicle : prevVehicle);
