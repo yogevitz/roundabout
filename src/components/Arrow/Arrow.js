@@ -14,7 +14,7 @@ const Arrow = ({
   dataHook = '',
   arrowSize = 'medium',
   buttonSkin = 'standard',
-  icon,
+  icon = <div />,
   className = '',
   disabled = false,
   ...remainingProps
