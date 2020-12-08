@@ -13,7 +13,7 @@ import {
 
 const TRANSITION_SPEED = 600;
 
-class Roundabout extends React.Component {
+export default class Roundabout extends React.Component {
   static defaultProps = {
     afterSlide: nop,
     beforeSlide: nop,
@@ -215,5 +215,3 @@ class Roundabout extends React.Component {
     );
   }
 }
-
-export default Roundabout;
