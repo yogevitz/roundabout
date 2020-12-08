@@ -26,29 +26,18 @@ class Roundabout extends React.Component {
     buttonSkin: 'standard',
   };
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      activeIndex: props.startAt,
-      isAnimating: false,
-    };
-  }
+  state = {
+    activeIndex: this.props.startAt,
+    isAnimating: false,
+  };
 
   componentDidMount() {
-    this.childCount =
-      this.roundabout && this.roundabout.children
-        ? this.roundabout.children.length
-        : 0;
-
+    this.childCount = this.roundabout?.children?.length || 0;
     this.slideTo(this.props.startAt, { immediate: true }).catch(nop);
   }
 
   componentDidUpdate(prevProps) {
-    this.childCount =
-      this.roundabout && this.roundabout.children
-        ? this.roundabout.children.length
-        : 0;
-
+    this.childCount = this.roundabout?.children?.length || 0;
     if (prevProps.slideTo !== this.props.slideTo) {
       this.slideTo(this.props.slideTo).catch(nop);
     }
