@@ -20,7 +20,6 @@ class Roundabout extends React.Component {
     onVehicleClick: nop,
     preventAutoCorrect: false,
     snapPositionOffset: 0,
-    snapToSlide: false,
     startAt: 0,
     style: {},
   };
@@ -69,10 +68,8 @@ class Roundabout extends React.Component {
     return !nextPropValues.every((val, i) => val === propValues[i]);
   }
 
-  canSelfCorrect = () =>
+  shouldSelfCorrect = () =>
     !this.props.preventAutoCorrect && !this.state.isAnimating;
-
-  shouldSelfCorrect = () => this.props.snapToSlide && this.canSelfCorrect();
 
   getNearestSlideIndex = () => {
     const { children, scrollLeft } = this.roundabout;
@@ -193,7 +190,6 @@ class Roundabout extends React.Component {
       infinite,
       gutter,
       preventAutoCorrect,
-      snapToSlide,
       snapPositionOffset,
       onVehicleClick,
       vehicleClass,
