@@ -22,6 +22,7 @@ class Roundabout extends React.Component {
     startOffset: 0,
     startAt: 0,
     style: {},
+    buttonSkin: 'standard',
   };
 
   constructor(props) {
@@ -195,6 +196,7 @@ class Roundabout extends React.Component {
       slideTo,
       startAt,
       style,
+      buttonSkin,
       ...props
     } = this.props;
 
@@ -210,7 +212,11 @@ class Roundabout extends React.Component {
 
     return (
       <div>
-        <Arrow icon={<ChevronLeftSmall />} onClick={this.prev} />
+        <Arrow
+          icon={<ChevronLeftSmall />}
+          onClick={this.prev}
+          buttonSkin={buttonSkin}
+        />
         <div
           className={className}
           style={{ ...style, ...styles }}
@@ -232,7 +238,11 @@ class Roundabout extends React.Component {
             </Vehicle>
           ))}
         </div>
-        <Arrow icon={<ChevronRightSmall />} onClick={this.next} />
+        <Arrow
+          icon={<ChevronRightSmall />}
+          onClick={this.next}
+          buttonSkin={buttonSkin}
+        />
       </div>
     );
   }
