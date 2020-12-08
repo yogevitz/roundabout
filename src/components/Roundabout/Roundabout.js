@@ -179,7 +179,7 @@ export default class Roundabout extends React.Component {
     };
 
     return (
-      <div>
+      <React.Fragment>
         <Arrow
           icon={<ChevronLeftSmall />}
           onClick={this.prev}
@@ -211,7 +211,7 @@ export default class Roundabout extends React.Component {
           onClick={this.next}
           buttonSkin={buttonSkin}
         />
-      </div>
+      </React.Fragment>
     );
   }
 }
