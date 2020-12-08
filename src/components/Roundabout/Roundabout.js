@@ -11,12 +11,14 @@ import {
   values,
 } from '../../utils';
 
+const TRANSITION_SPEED = 600;
+
 class Roundabout extends React.Component {
   static defaultProps = {
     afterSlide: nop,
     beforeSlide: nop,
-    animationDuration: 500,
-    gutter: '1em',
+    animationDuration: TRANSITION_SPEED,
+    gutter: 0,
     onVehicleClick: nop,
     preventAutoCorrect: false,
     startOffset: 0,
