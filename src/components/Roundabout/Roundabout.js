@@ -49,26 +49,26 @@ export default class Roundabout extends React.Component {
     return !nextPropValues.every((val, i) => val === propValues[i]);
   }
 
-  getPartiallyObscuredVehicles = () => {
+  getVisibleChildren = () => {
     const { roundabout } = this;
-    const findFirstObscuredChildIndex = [...roundabout.children].findIndex(
+    const findFirstVisibleChild = [...roundabout.children].findIndex(
       (child, i, children) =>
         !isWhollyInView(roundabout)(child) &&
         isWhollyInView(roundabout)(children[i + 1]),
     );
 
-    const firstObscuredChildIndex = Math.max(findFirstObscuredChildIndex, 0);
+    const firstVisibleChild = Math.max(findFirstVisibleChild, 0);
 
-    const findLastObscuredChildIndex = [...roundabout.children].findIndex(
+    const findLastVisibleChild = [...roundabout.children].findIndex(
       (child, i, children) =>
         !isWhollyInView(roundabout)(child) &&
         isWhollyInView(roundabout)(children[i - 1]),
     );
 
-    const lastObscuredChildIndex =
-      Math.max(findLastObscuredChildIndex, 0) || roundabout.children.length - 1;
+    const lastVisibleChild =
+      Math.max(findLastVisibleChild, 0) || roundabout.children.length - 1;
 
-    return [firstObscuredChildIndex, lastObscuredChildIndex];
+    return [firstVisibleChild, lastVisibleChild];
   };
 
   slideTo = (index, { immediate = false } = {}) => {
@@ -127,7 +127,7 @@ export default class Roundabout extends React.Component {
     const { childCount, props } = this;
     const { infinite } = props;
 
-    const [_, nextVehicle] = this.getPartiallyObscuredVehicles();
+    const [_, nextVehicle] = this.getVisibleChildren();
     const nextInfiniteVehicle =
       nextVehicle === childCount - 1 ? 0 : nextVehicle;
     return this.slideTo(infinite ? nextInfiniteVehicle : nextVehicle);
@@ -138,7 +138,7 @@ export default class Roundabout extends React.Component {
     const { activeIndex } = state;
     const { infinite } = props;
 
-    const [prevVehicle, _] = this.getPartiallyObscuredVehicles();
+    const [prevVehicle, _] = this.getVisibleChildren();
     const prevInfiniteVehicle =
       prevVehicle === activeIndex ? childCount - 1 : prevVehicle;
     return this.slideTo(infinite ? prevInfiniteVehicle : prevVehicle);
