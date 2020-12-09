@@ -171,7 +171,6 @@ export default class Roundabout extends React.Component {
     const styles = {
       display: 'flex',
       flexFlow: 'row nowrap',
-      justifyContent: 'space-between',
       overflowX: 'hidden',
       position: 'relative',
       transition: 'all .25s ease-in-quint',
