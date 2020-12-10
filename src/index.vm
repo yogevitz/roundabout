@@ -17,7 +17,7 @@
     <script src="https://${clientTopology.staticsDomain}/unpkg/react@16.12.0/umd/react#if(!${debug}).production.min#{else}.development#{end}.js"></script>
     <script src="https://${clientTopology.staticsDomain}/unpkg/react-dom@16.12.0/umd/react-dom#if(!${debug}).production.min#{else}.development#{end}.js"></script>
   </head>
-  <body>
+  <body style="background: #f0f4f7">
     <div id="root"></div>
     <script>
       window.__BASEURL__ = '${basename}';
