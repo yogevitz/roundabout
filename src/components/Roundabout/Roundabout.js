@@ -90,7 +90,6 @@ export default class Roundabout extends React.Component {
       0,
     );
     this.visibleVehicles = [firstVisibleChild, lastVisibleChild];
-    console.log('this.visibleVehicles', this.visibleVehicles);
     this.setState({
       isLeftArrowDisabled: !infinite && this.visibleVehicles[0] === 0,
       isRightArrowDisabled:
