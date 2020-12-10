@@ -32,26 +32,22 @@ export default class Roundabout extends React.Component {
   constructor(props) {
     super(props);
     this.loadingImagesCount = 0;
+    this.visibleVehicles = [];
     this.state = {
       activeIndex: this.props.startAt,
       isAnimating: false,
+      isShowLeftArrow: false,
+      isShowRightArrow: false,
     };
   }
 
   componentDidMount() {
     this.childCount = this.roundabout?.children?.length || 0;
-    if (this.props.startAt) {
-      this.setOnLoadHandlersForImages();
-      if (!this.loadingImagesCount) {
-        this.slideTo(this.props.startAt, { immediate: true }).catch(nop);
-      }
+    this.setOnLoadHandlersForImages();
+    if (!this.loadingImagesCount) {
+      this.slideTo(this.props.startAt, { immediate: true }).catch(nop);
+      this.setVisibleVehicles();
     }
-  }
-
-  shouldComponentUpdate(nextProps, nextState) {
-    const propValues = [...values(this.props), this.state.isAnimating];
-    const nextPropValues = [...values(nextProps), nextState.isAnimating];
-    return !nextPropValues.every((val, i) => val === propValues[i]);
   }
 
   onImageLoad = () => {
@@ -71,16 +67,15 @@ export default class Roundabout extends React.Component {
     });
   };
 
-  getFullyVisibleChildren = () => {
-    const { roundabout } = this;
-
+  setVisibleVehicles = () => {
+    const { props, roundabout, childCount } = this;
+    const { infinite } = props;
     const firstVisibleChild = Math.max(
       [...roundabout.children].findIndex((child) =>
         isWhollyInView(roundabout)(child),
       ),
       0,
     );
-
     const lastVisibleChild = Math.max(
       [...roundabout.children].findIndex(
         (child, i, children) =>
@@ -90,8 +85,12 @@ export default class Roundabout extends React.Component {
       ),
       0,
     );
-
-    return [firstVisibleChild, lastVisibleChild];
+    this.visibleVehicles = [firstVisibleChild, lastVisibleChild];
+    console.log('this.visibleVehicles', this.visibleVehicles);
+    this.setState({
+      isShowLeftArrow: infinite || this.visibleVehicles[0] !== 0,
+      isShowRightArrow: infinite || this.visibleVehicles[1] !== childCount - 1,
+    });
   };
 
   slideTo = (index, { immediate = false } = {}) => {
@@ -137,42 +136,38 @@ export default class Roundabout extends React.Component {
     })
       .then(() => {
         this.setState({ isAnimating: false });
+        this.setVisibleVehicles();
         if (startingIndex !== slideIndex) {
           return afterSlide(slideIndex);
         }
       })
       .catch((_) => {
+        this.setVisibleVehicles();
         this.setState({ isAnimating: false });
       });
   };
 
   next = () => {
     const { infinite } = this.props;
-
-    const [_, lastVisibleChild] = this.getFullyVisibleChildren();
-
+    const [_, lastVisibleChild] = this.visibleVehicles;
     let nextVehicle;
     if (lastVisibleChild === this.childCount - 1) {
       nextVehicle = infinite ? 0 : lastVisibleChild;
     } else {
       nextVehicle = lastVisibleChild + 1;
     }
-
     return this.slideTo(nextVehicle);
   };
 
   prev = () => {
     const { infinite } = this.props;
-
-    const [firstVisibleChild, _] = this.getFullyVisibleChildren();
-
+    const [firstVisibleChild, _] = this.visibleVehicles;
     let prevVehicle;
     if (firstVisibleChild === 0) {
       prevVehicle = infinite ? this.childCount - 1 : 0;
     } else {
       prevVehicle = firstVisibleChild - 1;
     }
-
     return this.slideTo(prevVehicle);
   };
 
@@ -199,6 +194,7 @@ export default class Roundabout extends React.Component {
       buttonSkin,
       ...props
     } = this.props;
+    const { isShowLeftArrow, isShowRightArrow } = this.state;
 
     const styles = {
       display: 'flex',
@@ -211,13 +207,15 @@ export default class Roundabout extends React.Component {
 
     return (
       <React.Fragment>
-        <Box align="center" marginBottom={3}>
-          <Arrow
-            icon={<ChevronLeftSmall />}
-            onClick={this.prev}
-            buttonSkin={buttonSkin}
-          />
-        </Box>
+        {isShowLeftArrow && (
+          <Box align="center" marginBottom={3}>
+            <Arrow
+              icon={<ChevronLeftSmall />}
+              onClick={this.prev}
+              buttonSkin={buttonSkin}
+            />
+          </Box>
+        )}
         <div
           className={className}
           style={{ ...style, ...styles }}
@@ -239,13 +237,15 @@ export default class Roundabout extends React.Component {
             </Vehicle>
           ))}
         </div>
-        <Box align="center" marginTop={3}>
-          <Arrow
-            icon={<ChevronRightSmall />}
-            onClick={this.next}
-            buttonSkin={buttonSkin}
-          />
-        </Box>
+        {isShowRightArrow && (
+          <Box align="center" marginTop={3}>
+            <Arrow
+              icon={<ChevronRightSmall />}
+              onClick={this.next}
+              buttonSkin={buttonSkin}
+            />
+          </Box>
+        )}
       </React.Fragment>
     );
   }
