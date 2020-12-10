@@ -5,6 +5,7 @@ import ChevronLeftSmall from 'wix-ui-icons-common/ChevronLeftSmall';
 import ChevronRightSmall from 'wix-ui-icons-common/ChevronRightSmall';
 import {
   animate,
+  isImage,
   isWhollyInView,
   nop,
   normalizeIndex,
@@ -34,7 +35,12 @@ export default class Roundabout extends React.Component {
 
   componentDidMount() {
     this.childCount = this.roundabout?.children?.length || 0;
-    this.slideTo(this.props.startAt, { immediate: true }).catch(nop);
+    if (this.props.startAt) {
+      this.setOnLoadHandlersForImages();
+      if (!this.loadingImagesCount) {
+        this.slideTo(this.props.startAt, { immediate: true }).catch(nop);
+      }
+    }
   }
 
   componentDidUpdate(prevProps) {
@@ -49,6 +55,24 @@ export default class Roundabout extends React.Component {
     const nextPropValues = [...values(nextProps), nextState.isAnimating];
     return !nextPropValues.every((val, i) => val === propValues[i]);
   }
+
+  loadingImagesCount = 0;
+  onImageLoad = () => {
+    this.loadingImagesCount--;
+    if (!this.loadingImagesCount) {
+      this.slideTo(this.props.startAt, { immediate: true }).catch(nop);
+    }
+  };
+
+  setOnLoadHandlersForImages = () => {
+    [...this.roundabout.children].forEach((child) => {
+      const childInnerElement = child.firstElementChild;
+      if (isImage(childInnerElement)) {
+        this.loadingImagesCount++;
+        childInnerElement.onload = this.onImageLoad;
+      }
+    });
+  };
 
   getFullyVisibleChildren = () => {
     const { roundabout } = this;

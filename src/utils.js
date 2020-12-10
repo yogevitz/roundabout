@@ -15,6 +15,8 @@ export const values =
 
 export const nop = () => {};
 
+export const isImage = (element) => element instanceof HTMLImageElement;
+
 export const easeOutQuint = (t) => {
   let n = t;
   return 1 + --n * n ** 4;
