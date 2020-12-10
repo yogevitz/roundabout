@@ -24,6 +24,7 @@ export default class Roundabout extends React.Component {
     startAt: 0,
     style: {},
     buttonSkin: 'standard',
+    infinite: false,
   };
 
   state = {
