@@ -50,24 +50,25 @@ export default class Roundabout extends React.Component {
     return !nextPropValues.every((val, i) => val === propValues[i]);
   }
 
-  getVisibleChildren = () => {
+  getFullyVisibleChildren = () => {
     const { roundabout } = this;
-    const findFirstVisibleChild = [...roundabout.children].findIndex(
-      (child, i, children) =>
-        !isWhollyInView(roundabout)(child) &&
-        isWhollyInView(roundabout)(children[i + 1]),
+
+    const firstVisibleChild = Math.max(
+      [...roundabout.children].findIndex((child) =>
+        isWhollyInView(roundabout)(child),
+      ),
+      0,
     );
 
-    const firstVisibleChild = Math.max(findFirstVisibleChild, 0);
-
-    const findLastVisibleChild = [...roundabout.children].findIndex(
-      (child, i, children) =>
-        !isWhollyInView(roundabout)(child) &&
-        isWhollyInView(roundabout)(children[i - 1]),
+    const lastVisibleChild = Math.max(
+      [...roundabout.children].findIndex(
+        (child, i, children) =>
+          isWhollyInView(roundabout)(child) &&
+          (i === children.length - 1 ||
+            !isWhollyInView(roundabout)(children[i + 1])),
+      ),
+      0,
     );
-
-    const lastVisibleChild =
-      Math.max(findLastVisibleChild, 0) || roundabout.children.length - 1;
 
     return [firstVisibleChild, lastVisibleChild];
   };
@@ -125,24 +126,33 @@ export default class Roundabout extends React.Component {
   };
 
   next = () => {
-    const { childCount, props } = this;
-    const { infinite } = props;
+    const { infinite } = this.props;
 
-    const [_, nextVehicle] = this.getVisibleChildren();
-    const nextInfiniteVehicle =
-      nextVehicle === childCount - 1 ? 0 : nextVehicle;
-    return this.slideTo(infinite ? nextInfiniteVehicle : nextVehicle);
+    const [_, lastVisibleChild] = this.getFullyVisibleChildren();
+
+    let nextVehicle;
+    if (lastVisibleChild === this.childCount - 1) {
+      nextVehicle = infinite ? 0 : lastVisibleChild;
+    } else {
+      nextVehicle = lastVisibleChild + 1;
+    }
+
+    return this.slideTo(nextVehicle);
   };
 
   prev = () => {
-    const { childCount, state, props } = this;
-    const { activeIndex } = state;
-    const { infinite } = props;
+    const { infinite } = this.props;
 
-    const [prevVehicle, _] = this.getVisibleChildren();
-    const prevInfiniteVehicle =
-      prevVehicle === activeIndex ? childCount - 1 : prevVehicle;
-    return this.slideTo(infinite ? prevInfiniteVehicle : prevVehicle);
+    const [firstVisibleChild, _] = this.getFullyVisibleChildren();
+
+    let prevVehicle;
+    if (firstVisibleChild === 0) {
+      prevVehicle = infinite ? this.childCount - 1 : 0;
+    } else {
+      prevVehicle = firstVisibleChild - 1;
+    }
+
+    return this.slideTo(prevVehicle);
   };
 
   setRef = (r) => {
