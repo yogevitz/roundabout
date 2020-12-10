@@ -19,7 +19,7 @@ export default class Roundabout extends React.Component {
     afterSlide: nop,
     beforeSlide: nop,
     animationDuration: TRANSITION_SPEED,
-    gutter: 0,
+    gutter: '6px',
     onVehicleClick: nop,
     startOffset: 0,
     startAt: 0,
