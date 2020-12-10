@@ -44,13 +44,6 @@ export default class Roundabout extends React.Component {
     }
   }
 
-  componentDidUpdate(prevProps) {
-    this.childCount = this.roundabout?.children?.length || 0;
-    if (prevProps.slideTo !== this.props.slideTo) {
-      this.slideTo(this.props.slideTo).catch(nop);
-    }
-  }
-
   shouldComponentUpdate(nextProps, nextState) {
     const propValues = [...values(this.props), this.state.isAnimating];
     const nextPropValues = [...values(nextProps), nextState.isAnimating];
