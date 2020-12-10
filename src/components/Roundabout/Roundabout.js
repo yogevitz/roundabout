@@ -11,6 +11,7 @@ import {
   normalizeIndex,
   values,
 } from '../../utils';
+import { Box } from 'wix-style-react';
 
 const TRANSITION_SPEED = 600;
 
@@ -214,11 +215,13 @@ export default class Roundabout extends React.Component {
 
     return (
       <React.Fragment>
-        <Arrow
-          icon={<ChevronLeftSmall />}
-          onClick={this.prev}
-          buttonSkin={buttonSkin}
-        />
+        <Box align="center" marginBottom={3}>
+          <Arrow
+            icon={<ChevronLeftSmall />}
+            onClick={this.prev}
+            buttonSkin={buttonSkin}
+          />
+        </Box>
         <div
           className={className}
           style={{ ...style, ...styles }}
@@ -240,11 +243,13 @@ export default class Roundabout extends React.Component {
             </Vehicle>
           ))}
         </div>
-        <Arrow
-          icon={<ChevronRightSmall />}
-          onClick={this.next}
-          buttonSkin={buttonSkin}
-        />
+        <Box align="center" marginTop={3}>
+          <Arrow
+            icon={<ChevronRightSmall />}
+            onClick={this.next}
+            buttonSkin={buttonSkin}
+          />
+        </Box>
       </React.Fragment>
     );
   }
