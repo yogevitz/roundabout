@@ -9,11 +9,14 @@ import {
   isWhollyInView,
   nop,
   normalizeIndex,
-  values,
 } from '../../utils';
 import { Box } from 'wix-style-react';
 
 const TRANSITION_SPEED = 600;
+const CONTROLS_START_END = {
+  HIDDEN: 'hidden',
+  DISABLED: 'disabled',
+};
 
 export default class Roundabout extends React.Component {
   static defaultProps = {
@@ -27,6 +30,7 @@ export default class Roundabout extends React.Component {
     style: {},
     buttonSkin: 'standard',
     infinite: false,
+    controlsStartEnd: CONTROLS_START_END.DISABLED,
   };
 
   constructor(props) {
@@ -36,8 +40,8 @@ export default class Roundabout extends React.Component {
     this.state = {
       activeIndex: this.props.startAt,
       isAnimating: false,
-      isShowLeftArrow: false,
-      isShowRightArrow: false,
+      isLeftArrowDisabled: true,
+      isRightArrowDisabled: true,
     };
   }
 
@@ -88,8 +92,9 @@ export default class Roundabout extends React.Component {
     this.visibleVehicles = [firstVisibleChild, lastVisibleChild];
     console.log('this.visibleVehicles', this.visibleVehicles);
     this.setState({
-      isShowLeftArrow: infinite || this.visibleVehicles[0] !== 0,
-      isShowRightArrow: infinite || this.visibleVehicles[1] !== childCount - 1,
+      isLeftArrowDisabled: !infinite && this.visibleVehicles[0] === 0,
+      isRightArrowDisabled:
+        !infinite && this.visibleVehicles[1] === childCount - 1,
     });
   };
 
@@ -192,9 +197,10 @@ export default class Roundabout extends React.Component {
       startAt,
       style,
       buttonSkin,
+      controlsStartEnd,
       ...props
     } = this.props;
-    const { isShowLeftArrow, isShowRightArrow } = this.state;
+    const { isLeftArrowDisabled, isRightArrowDisabled } = this.state;
 
     const styles = {
       display: 'flex',
@@ -207,12 +213,14 @@ export default class Roundabout extends React.Component {
 
     return (
       <React.Fragment>
-        {isShowLeftArrow && (
+        {(!isLeftArrowDisabled ||
+          controlsStartEnd === CONTROLS_START_END.DISABLED) && (
           <Box align="center" marginBottom={3}>
             <Arrow
               icon={<ChevronLeftSmall />}
               onClick={this.prev}
               buttonSkin={buttonSkin}
+              disabled={isLeftArrowDisabled}
             />
           </Box>
         )}
@@ -237,12 +245,14 @@ export default class Roundabout extends React.Component {
             </Vehicle>
           ))}
         </div>
-        {isShowRightArrow && (
+        {(!isRightArrowDisabled ||
+          controlsStartEnd === CONTROLS_START_END.DISABLED) && (
           <Box align="center" marginTop={3}>
             <Arrow
               icon={<ChevronRightSmall />}
               onClick={this.next}
               buttonSkin={buttonSkin}
+              disabled={isRightArrowDisabled}
             />
           </Box>
         )}
