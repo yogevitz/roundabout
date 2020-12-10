@@ -29,10 +29,14 @@ export default class Roundabout extends React.Component {
     infinite: false,
   };
 
-  state = {
-    activeIndex: this.props.startAt,
-    isAnimating: false,
-  };
+  constructor(props) {
+    super(props);
+    this.loadingImagesCount = 0;
+    this.state = {
+      activeIndex: this.props.startAt,
+      isAnimating: false,
+    };
+  }
 
   componentDidMount() {
     this.childCount = this.roundabout?.children?.length || 0;
@@ -50,7 +54,6 @@ export default class Roundabout extends React.Component {
     return !nextPropValues.every((val, i) => val === propValues[i]);
   }
 
-  loadingImagesCount = 0;
   onImageLoad = () => {
     this.loadingImagesCount--;
     if (!this.loadingImagesCount) {
