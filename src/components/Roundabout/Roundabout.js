@@ -43,7 +43,7 @@ export default class Roundabout extends React.Component {
 
   componentDidMount() {
     this.childCount = this.roundabout?.children?.length || 0;
-    this.setOnLoadHandlersForImages();
+    this.setImgOnLoadHandlers();
     if (!this.loadingImagesCount) {
       this.slideTo(this.props.startAt, { immediate: true }).catch(nop);
       this.setVisibleVehicles();
@@ -57,7 +57,7 @@ export default class Roundabout extends React.Component {
     }
   };
 
-  setOnLoadHandlersForImages = () => {
+  setImgOnLoadHandlers = () => {
     [...this.roundabout.children].forEach((child) => {
       const childInnerElement = child.firstElementChild;
       if (isImage(childInnerElement)) {
