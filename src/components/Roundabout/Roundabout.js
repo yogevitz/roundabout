@@ -14,8 +14,8 @@ import { Box } from 'wix-style-react';
 
 const TRANSITION_SPEED = 600;
 const CONTROLS_START_END = {
-  HIDDEN: 'hidden',
-  DISABLED: 'disabled',
+  HIDDEN: 'HIDDEN',
+  DISABLED: 'DISABLED',
 };
 
 export default class Roundabout extends React.Component {
