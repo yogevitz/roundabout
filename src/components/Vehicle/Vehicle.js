@@ -4,6 +4,7 @@ const Vehicle = ({
   basis = '100%',
   gutter = '1em',
   className = '',
+  image,
   children,
   ...props
 }) => (
@@ -16,7 +17,7 @@ const Vehicle = ({
     }}
     {...props}
   >
-    {children}
+    {image ? <img src={image} /> : children}
   </div>
 );
 

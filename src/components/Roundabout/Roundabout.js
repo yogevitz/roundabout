@@ -31,6 +31,7 @@ export default class Roundabout extends React.Component {
     buttonSkin: 'standard',
     infinite: false,
     controlsStartEnd: CONTROLS_START_END.DISABLED,
+    images: [],
   };
 
   constructor(props) {
@@ -46,10 +47,11 @@ export default class Roundabout extends React.Component {
   }
 
   componentDidMount() {
-    this.childCount = this.roundabout?.children?.length || 0;
+    const { startAt, images } = this.props;
+    this.childCount = this.roundabout?.children?.length || images.length || 0;
     this.setImgOnLoadHandlers();
     if (!this.loadingImagesCount) {
-      this.slideTo(this.props.startAt, { immediate: true }).catch(nop);
+      this.slideTo(startAt, { immediate: true }).catch(nop);
       this.setVisibleVehicles();
     }
   }
@@ -199,6 +201,7 @@ export default class Roundabout extends React.Component {
       style,
       buttonSkin,
       controlsStartEnd,
+      images,
       ...props
     } = this.props;
     const { isLeftArrowDisabled, isRightArrowDisabled } = this.state;
@@ -233,18 +236,30 @@ export default class Roundabout extends React.Component {
           ref={this.setRef}
           {...props}
         >
-          {React.Children.map(children, (child, i) => (
-            <Vehicle
-              className={vehicleClass}
-              key={`slide-${i}`}
-              basis="auto"
-              gutter={i > 0 ? gutter : ''}
-              onClick={onVehicleClick}
-              role="listitem"
-            >
-              {child}
-            </Vehicle>
-          ))}
+          {images.length
+            ? images.map((image, i) => (
+                <Vehicle
+                  className={vehicleClass}
+                  key={`slide-${i}`}
+                  basis="auto"
+                  gutter={i > 0 ? gutter : ''}
+                  onClick={onVehicleClick}
+                  role="listitem"
+                  image={image}
+                />
+              ))
+            : React.Children.map(children, (child, i) => (
+                <Vehicle
+                  className={vehicleClass}
+                  key={`slide-${i}`}
+                  basis="auto"
+                  gutter={i > 0 ? gutter : ''}
+                  onClick={onVehicleClick}
+                  role="listitem"
+                >
+                  {child}
+                </Vehicle>
+              ))}
         </div>
         {(!isRightArrowDisabled ||
           controlsStartEnd === CONTROLS_START_END.DISABLED) && (
