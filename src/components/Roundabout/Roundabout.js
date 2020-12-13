@@ -67,6 +67,7 @@ export default class Roundabout extends React.Component {
       if (isImage(childInnerElement)) {
         this.loadingImagesCount++;
         childInnerElement.onload = this.onImageLoad;
+        childInnerElement.onerror = this.onImageLoad;
       }
     });
   };
