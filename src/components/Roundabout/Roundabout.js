@@ -63,12 +63,13 @@ export default class Roundabout extends React.Component {
 
   setImgOnLoadHandlers = () => {
     [...this.roundabout.children].forEach((child) => {
-      const childInnerElement = child.firstElementChild;
-      if (isImage(childInnerElement)) {
+      const childImages = [...child.getElementsByTagName('img')];
+      console.log({ childImages });
+      childImages.forEach((img) => {
         this.loadingImagesCount++;
-        childInnerElement.onload = this.onImageLoad;
-        childInnerElement.onerror = this.onImageLoad;
-      }
+        img.onload = this.onImageLoad;
+        img.onerror = this.onImageLoad;
+      });
     });
   };
 
