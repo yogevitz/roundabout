@@ -13,7 +13,7 @@ const skinPriorityMap = {
 const Arrow = ({
   dataHook = '',
   arrowSize = 'medium',
-  buttonSkin = 'standard',
+  controlsSkin = 'standard',
   icon = <div />,
   className = '',
   disabled = false,
@@ -22,10 +22,10 @@ const Arrow = ({
   <div {...remainingProps} data-hook={dataHook} className={className}>
     <IconButton
       className={classes.arrows}
-      skin={buttonSkin}
+      skin={controlsSkin}
       size={arrowSize}
       disabled={disabled}
-      priority={skinPriorityMap[buttonSkin]}
+      priority={skinPriorityMap[controlsSkin]}
     >
       {icon}
     </IconButton>

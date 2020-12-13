@@ -28,7 +28,7 @@ export default class Roundabout extends React.Component {
     startOffset: 0,
     startAt: 0,
     style: {},
-    buttonSkin: 'standard',
+    controlsSkin: 'standard',
     infinite: false,
     controlsStartEnd: CONTROLS_START_END.DISABLED,
     images: [],
@@ -199,7 +199,7 @@ export default class Roundabout extends React.Component {
       slideTo,
       startAt,
       style,
-      buttonSkin,
+      controlsSkin,
       controlsStartEnd,
       images,
       ...props
@@ -223,7 +223,7 @@ export default class Roundabout extends React.Component {
             <Arrow
               icon={<ChevronLeftSmall />}
               onClick={this.prev}
-              buttonSkin={buttonSkin}
+              controlsSkin={controlsSkin}
               disabled={isLeftArrowDisabled}
             />
           </Box>
@@ -267,7 +267,7 @@ export default class Roundabout extends React.Component {
             <Arrow
               icon={<ChevronRightSmall />}
               onClick={this.next}
-              buttonSkin={buttonSkin}
+              controlsSkin={controlsSkin}
               disabled={isRightArrowDisabled}
             />
           </Box>
