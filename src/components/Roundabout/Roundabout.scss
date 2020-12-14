@@ -1,0 +1,19 @@
+.root {
+  position: relative;
+}
+
+.control {
+  display: block;
+  top: calc(50% - 18px);
+  transform: none;
+  z-index: 9999;
+  position: absolute;
+}
+
+.next {
+  right: 8px;
+}
+
+.prev {
+  left: 8px;
+}

@@ -4,7 +4,7 @@ import Arrow from '../Arrow';
 import ChevronLeftSmall from 'wix-ui-icons-common/ChevronLeftSmall';
 import ChevronRightSmall from 'wix-ui-icons-common/ChevronRightSmall';
 import { animate, isWhollyInView, nop, normalizeIndex } from '../../utils';
-import { Box } from 'wix-style-react';
+import classes from './Roundabout.scss';
 
 const TRANSITION_SPEED = 600;
 const CONTROLS_START_END = {
@@ -270,17 +270,16 @@ export default class Roundabout extends React.Component {
     };
 
     return (
-      <React.Fragment>
+      <div className={classes.root}>
         {(!isLeftArrowDisabled ||
           controlsStartEnd === CONTROLS_START_END.DISABLED) && (
-          <Box align="center" marginBottom={3}>
-            <Arrow
-              icon={<ChevronLeftSmall />}
-              onClick={this.prev}
-              controlsSkin={controlsSkin}
-              disabled={isLeftArrowDisabled}
-            />
-          </Box>
+          <Arrow
+            icon={<ChevronLeftSmall />}
+            onClick={this.prev}
+            controlsSkin={controlsSkin}
+            disabled={isLeftArrowDisabled}
+            className={`${classes.control} ${classes.prev}`}
+          />
         )}
         <div
           className={className}
@@ -317,16 +316,15 @@ export default class Roundabout extends React.Component {
         </div>
         {(!isRightArrowDisabled ||
           controlsStartEnd === CONTROLS_START_END.DISABLED) && (
-          <Box align="center" marginTop={3}>
-            <Arrow
-              icon={<ChevronRightSmall />}
-              onClick={this.next}
-              controlsSkin={controlsSkin}
-              disabled={isRightArrowDisabled}
-            />
-          </Box>
+          <Arrow
+            icon={<ChevronRightSmall />}
+            onClick={this.next}
+            controlsSkin={controlsSkin}
+            disabled={isRightArrowDisabled}
+            className={`${classes.control} ${classes.next}`}
+          />
         )}
-      </React.Fragment>
+      </div>
     );
   }
 }

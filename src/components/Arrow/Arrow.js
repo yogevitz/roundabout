@@ -1,6 +1,5 @@
 import React from 'react';
 import { IconButton } from 'wix-style-react';
-import classes from './Arrow.scss';
 
 const skinPriorityMap = {
   standard: 'secondary',
@@ -21,7 +20,6 @@ const Arrow = ({
 }) => (
   <div {...remainingProps} data-hook={dataHook} className={className}>
     <IconButton
-      className={classes.arrows}
       skin={controlsSkin}
       size={arrowSize}
       disabled={disabled}
