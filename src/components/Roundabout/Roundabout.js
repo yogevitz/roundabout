@@ -3,13 +3,7 @@ import Vehicle from '../Vehicle';
 import Arrow from '../Arrow';
 import ChevronLeftSmall from 'wix-ui-icons-common/ChevronLeftSmall';
 import ChevronRightSmall from 'wix-ui-icons-common/ChevronRightSmall';
-import {
-  animate,
-  isImage,
-  isWhollyInView,
-  nop,
-  normalizeIndex,
-} from '../../utils';
+import { animate, isWhollyInView, nop, normalizeIndex } from '../../utils';
 import { Box } from 'wix-style-react';
 
 const TRANSITION_SPEED = 600;
