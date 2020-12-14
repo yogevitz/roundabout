@@ -17,6 +17,15 @@ const CONTROLS_START_END = {
   HIDDEN: 'HIDDEN',
   DISABLED: 'DISABLED',
 };
+const SLIDING_TYPE = {
+  REVEAL_ONE: 'REVEAL_ONE',
+  REVEAL_CHUNK: 'REVEAL_CHUNK',
+  ALIGN_NEXT: 'ALIGN_NEXT',
+};
+const ALIGNMENT = {
+  LEFT: 'LEFT',
+  RIGHT: 'RIGHT',
+};
 
 export default class Roundabout extends React.Component {
   static defaultProps = {
@@ -26,12 +35,14 @@ export default class Roundabout extends React.Component {
     gutter: '6px',
     onVehicleClick: nop,
     startOffset: 0,
+    endOffset: 0,
     startAt: 0,
     style: {},
     controlsSkin: 'standard',
     infinite: false,
     controlsStartEnd: CONTROLS_START_END.DISABLED,
     images: [],
+    slidingType: SLIDING_TYPE.REVEAL_ONE,
   };
 
   constructor(props) {
@@ -51,7 +62,7 @@ export default class Roundabout extends React.Component {
     this.childCount = this.roundabout?.children?.length || images.length || 0;
     this.setImgOnLoadHandlers();
     if (!this.loadingImagesCount) {
-      this.slideTo(startAt, { immediate: true }).catch(nop);
+      this.slideTo({ index: startAt, immediate: true }).catch(nop);
       this.setVisibleVehicles();
     }
   }
@@ -59,7 +70,7 @@ export default class Roundabout extends React.Component {
   onImageLoad = () => {
     this.loadingImagesCount--;
     if (!this.loadingImagesCount) {
-      this.slideTo(this.props.startAt, { immediate: true }).catch(nop);
+      this.slideTo({ index: this.props.startAt, immediate: true }).catch(nop);
     }
   };
 
@@ -100,7 +111,14 @@ export default class Roundabout extends React.Component {
     });
   };
 
-  slideTo = (index, { immediate = false } = {}) => {
+  slideTo = (
+    { index, alignTo, immediate } = {
+      index: 0,
+      alignTo: ALIGNMENT.LEFT,
+      immediate: false,
+    },
+  ) => {
+    console.log({ index, alignTo, immediate });
     if (this.childCount === 0) {
       return Promise.reject('No children to slide to');
     }
@@ -114,11 +132,22 @@ export default class Roundabout extends React.Component {
       animationDuration: duration,
       infinite,
       startOffset,
+      endOffset,
     } = this.props;
-    const { children, scrollLeft } = this.roundabout;
+    const { children, scrollLeft, offsetWidth } = this.roundabout;
     const slideIndex = normalizeIndex(index, this.childCount, infinite);
     const startingIndex = this.state.activeIndex;
-    const delta = children[slideIndex].offsetLeft - scrollLeft - startOffset;
+    let delta;
+    if (alignTo === ALIGNMENT.RIGHT) {
+      delta =
+        children[slideIndex].offsetWidth -
+        (offsetWidth - children[slideIndex].offsetLeft) -
+        scrollLeft +
+        endOffset;
+    } else {
+      delta = children[slideIndex].offsetLeft - scrollLeft - startOffset;
+    }
+    console.log({ delta });
     if (startingIndex !== slideIndex) {
       beforeSlide(index);
     }
@@ -155,27 +184,57 @@ export default class Roundabout extends React.Component {
   };
 
   next = () => {
-    const { infinite } = this.props;
-    const [_, lastVisibleChild] = this.visibleVehicles;
-    let nextVehicle;
-    if (lastVisibleChild === this.childCount - 1) {
-      nextVehicle = infinite ? 0 : lastVisibleChild;
+    const { slidingType, infinite } = this.props;
+    const [firstVisibleChild, lastVisibleChild] = this.visibleVehicles;
+    let nextVehicle, alignTo;
+    if (
+      [SLIDING_TYPE.REVEAL_CHUNK, SLIDING_TYPE.REVEAL_ONE].includes(slidingType)
+    ) {
+      if (lastVisibleChild === this.childCount - 1) {
+        nextVehicle = infinite ? 0 : lastVisibleChild;
+      } else {
+        nextVehicle = lastVisibleChild + 1;
+      }
+      alignTo =
+        slidingType === SLIDING_TYPE.REVEAL_CHUNK
+          ? ALIGNMENT.LEFT
+          : ALIGNMENT.RIGHT;
     } else {
-      nextVehicle = lastVisibleChild + 1;
+      if (firstVisibleChild === this.childCount - 1) {
+        nextVehicle = infinite ? 0 : firstVisibleChild;
+      } else {
+        nextVehicle = firstVisibleChild + 1;
+      }
+      alignTo = ALIGNMENT.LEFT;
     }
-    return this.slideTo(nextVehicle);
+    return this.slideTo({ index: nextVehicle, alignTo });
   };
 
   prev = () => {
-    const { infinite } = this.props;
+    const { slidingType, infinite } = this.props;
     const [firstVisibleChild, _] = this.visibleVehicles;
-    let prevVehicle;
-    if (firstVisibleChild === 0) {
-      prevVehicle = infinite ? this.childCount - 1 : 0;
+    let prevVehicle, alignTo;
+    if (
+      [SLIDING_TYPE.REVEAL_CHUNK, SLIDING_TYPE.REVEAL_ONE].includes(slidingType)
+    ) {
+      if (firstVisibleChild === 0) {
+        prevVehicle = infinite ? this.childCount - 1 : firstVisibleChild;
+      } else {
+        prevVehicle = firstVisibleChild - 1;
+      }
+      alignTo =
+        slidingType === SLIDING_TYPE.REVEAL_CHUNK
+          ? ALIGNMENT.RIGHT
+          : ALIGNMENT.LEFT;
     } else {
-      prevVehicle = firstVisibleChild - 1;
+      if (firstVisibleChild === 0) {
+        prevVehicle = infinite ? this.childCount - 1 : 0;
+      } else {
+        prevVehicle = firstVisibleChild - 1;
+      }
+      alignTo = ALIGNMENT.LEFT;
     }
-    return this.slideTo(prevVehicle);
+    return this.slideTo({ index: prevVehicle, alignTo });
   };
 
   setRef = (r) => {
@@ -193,6 +252,7 @@ export default class Roundabout extends React.Component {
       infinite,
       gutter,
       startOffset,
+      endOffset,
       onVehicleClick,
       vehicleClass,
       slideTo,
@@ -201,6 +261,7 @@ export default class Roundabout extends React.Component {
       controlsSkin,
       controlsStartEnd,
       images,
+      slidingType,
       ...props
     } = this.props;
     const { isLeftArrowDisabled, isRightArrowDisabled } = this.state;
