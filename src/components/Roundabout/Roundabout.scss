@@ -8,6 +8,10 @@
   transform: none;
   z-index: 9999;
   position: absolute;
+  border-radius: 50px;
+  -webkit-box-shadow: 2px 5px 5px 0px rgba(0, 0, 0, 0.23);
+  -moz-box-shadow: 2px 5px 5px 0px rgba(0, 0, 0, 0.23);
+  box-shadow: 2px 5px 5px 0px rgba(0, 0, 0, 0.23);
 }
 
 .next {
