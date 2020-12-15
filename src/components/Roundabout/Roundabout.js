@@ -112,7 +112,6 @@ export default class Roundabout extends React.Component {
       immediate: false,
     },
   ) => {
-    console.log({ index, alignTo, immediate });
     if (this.childCount === 0) {
       return Promise.reject('No children to slide to');
     }
@@ -141,7 +140,6 @@ export default class Roundabout extends React.Component {
     } else {
       delta = children[slideIndex].offsetLeft - scrollLeft - startOffset;
     }
-    console.log({ delta });
     if (startingIndex !== slideIndex) {
       beforeSlide(index);
     }
