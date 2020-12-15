@@ -2,7 +2,7 @@ import React from 'react';
 
 const Vehicle = ({
   basis = '100%',
-  gutter = '1em',
+  gutter = '',
   className = '',
   image,
   children,
