@@ -23,8 +23,8 @@ const ALIGNMENT = {
 
 export default class Roundabout extends React.Component {
   static defaultProps = {
-    afterSlide: nop,
-    beforeSlide: nop,
+    afterChange: nop,
+    beforeChange: nop,
     animationDuration: TRANSITION_SPEED,
     gutter: '6px',
     onVehicleClick: nop,
@@ -119,8 +119,8 @@ export default class Roundabout extends React.Component {
       return Promise.reject('The Roundabout is not mounted');
     }
     const {
-      afterSlide,
-      beforeSlide,
+      afterChange,
+      beforeChange,
       easing,
       animationDuration: duration,
       infinite,
@@ -141,7 +141,7 @@ export default class Roundabout extends React.Component {
       delta = children[slideIndex].offsetLeft - scrollLeft - startOffset;
     }
     if (startingIndex !== slideIndex) {
-      beforeSlide(index);
+      beforeChange(index);
     }
     this.setState({ isAnimating: true, activeIndex: slideIndex });
     return new Promise((res, _) => {
@@ -166,7 +166,7 @@ export default class Roundabout extends React.Component {
         this.setState({ isAnimating: false });
         this.setVisibleVehicles();
         if (startingIndex !== slideIndex) {
-          return afterSlide(slideIndex);
+          return afterChange(slideIndex);
         }
       })
       .catch((_) => {
@@ -235,8 +235,8 @@ export default class Roundabout extends React.Component {
 
   render() {
     const {
-      afterSlide,
-      beforeSlide,
+      afterChange,
+      beforeChange,
       animationDuration,
       children,
       className,
