@@ -23,6 +23,7 @@ const ALIGNMENT = {
 
 export default class Roundabout extends React.Component {
   static defaultProps = {
+    dataHook: '',
     afterChange: nop,
     beforeChange: nop,
     animationDuration: TRANSITION_SPEED,
@@ -254,6 +255,7 @@ export default class Roundabout extends React.Component {
       controlsStartEnd,
       images,
       slidingType,
+      dataHook,
       ...props
     } = this.props;
     const { isLeftArrowDisabled, isRightArrowDisabled } = this.state;
@@ -268,7 +270,7 @@ export default class Roundabout extends React.Component {
     };
 
     return (
-      <div className={classes.root}>
+      <div data-hook={dataHook} className={classes.root}>
         {(!isLeftArrowDisabled ||
           controlsStartEnd === CONTROLS_START_END.DISABLED) && (
           <Arrow
