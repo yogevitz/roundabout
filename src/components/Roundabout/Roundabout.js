@@ -267,6 +267,7 @@ export default class Roundabout extends React.Component {
       position: 'relative',
       transition: 'all .25s ease-in-quint',
       outline: 'none',
+      margin: 'auto',
     };
 
     return (
