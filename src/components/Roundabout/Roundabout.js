@@ -27,7 +27,7 @@ export default class Roundabout extends React.Component {
     afterChange: nop,
     beforeChange: nop,
     animationDuration: TRANSITION_SPEED,
-    gutter: '0px',
+    gutter: 0,
     onVehicleClick: nop,
     startOffset: 24,
     endOffset: 24,
@@ -296,7 +296,7 @@ export default class Roundabout extends React.Component {
                   className={vehicleClass}
                   key={`slide-${i}`}
                   basis="auto"
-                  gutter={i > 0 ? gutter : ''}
+                  gutter={i > 0 ? `${gutter}px` : ''}
                   onClick={onVehicleClick}
                   role="listitem"
                   image={image}
@@ -307,7 +307,7 @@ export default class Roundabout extends React.Component {
                   className={vehicleClass}
                   key={`slide-${i}`}
                   basis="auto"
-                  gutter={i > 0 ? gutter : ''}
+                  gutter={i > 0 ? `${gutter}px` : ''}
                   onClick={onVehicleClick}
                   role="listitem"
                 >
