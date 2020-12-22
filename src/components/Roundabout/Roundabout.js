@@ -290,19 +290,8 @@ export default class Roundabout extends React.Component {
           ref={this.setRef}
           {...props}
         >
-          {images.length
-            ? images.map((image, i) => (
-                <Vehicle
-                  className={vehicleClass}
-                  key={`slide-${i}`}
-                  basis="auto"
-                  gutter={i > 0 ? `${gutter}px` : ''}
-                  onClick={onVehicleClick}
-                  role="listitem"
-                  image={image}
-                />
-              ))
-            : React.Children.map(children, (child, i) => (
+          {children
+            ? React.Children.map(children, (child, i) => (
                 <Vehicle
                   className={vehicleClass}
                   key={`slide-${i}`}
@@ -313,6 +302,17 @@ export default class Roundabout extends React.Component {
                 >
                   {child}
                 </Vehicle>
+              ))
+            : images.map((image, i) => (
+                <Vehicle
+                  className={vehicleClass}
+                  key={`slide-${i}`}
+                  basis="auto"
+                  gutter={i > 0 ? `${gutter}px` : ''}
+                  onClick={onVehicleClick}
+                  role="listitem"
+                  image={image}
+                />
               ))}
         </div>
         {(!isRightArrowDisabled ||
