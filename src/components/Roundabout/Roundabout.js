@@ -269,6 +269,18 @@ export default class Roundabout extends React.Component {
       outline: 'none',
       margin: 'auto',
     };
+    const vehicle = ({ i, image, child }) => (
+      <Vehicle
+        className={vehicleClass}
+        key={`slide-${i}`}
+        basis="auto"
+        gutter={i > 0 ? `${gutter}px` : ''}
+        onClick={onVehicleClick}
+        role="listitem"
+        image={image}
+        children={child}
+      />
+    );
 
     return (
       <div data-hook={dataHook} className={classes.root}>
@@ -291,29 +303,8 @@ export default class Roundabout extends React.Component {
           {...props}
         >
           {children
-            ? React.Children.map(children, (child, i) => (
-                <Vehicle
-                  className={vehicleClass}
-                  key={`slide-${i}`}
-                  basis="auto"
-                  gutter={i > 0 ? `${gutter}px` : ''}
-                  onClick={onVehicleClick}
-                  role="listitem"
-                >
-                  {child}
-                </Vehicle>
-              ))
-            : images.map((image, i) => (
-                <Vehicle
-                  className={vehicleClass}
-                  key={`slide-${i}`}
-                  basis="auto"
-                  gutter={i > 0 ? `${gutter}px` : ''}
-                  onClick={onVehicleClick}
-                  role="listitem"
-                  image={image}
-                />
-              ))}
+            ? React.Children.map(children, (child, i) => vehicle({ i, child }))
+            : images.map((image, i) => vehicle({ i, image }))}
         </div>
         {(!isRightArrowDisabled ||
           controlsStartEnd === CONTROLS_START_END.DISABLED) && (
