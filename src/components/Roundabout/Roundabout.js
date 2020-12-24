@@ -62,12 +62,6 @@ export default class Roundabout extends React.Component {
     }
   }
 
-  componentWillReceiveProps(nextProps) {
-    if (this.props.children.length !== nextProps.children.length) {
-      this.setVisibleVehicles();
-    }
-  }
-
   onImageLoad = () => {
     this.loadingImagesCount--;
     if (!this.loadingImagesCount) {
