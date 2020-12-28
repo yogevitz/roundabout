@@ -10,11 +10,11 @@ const skinPriorityMap = {
 };
 
 const Arrow = ({
-  dataHook = '',
-  arrowSize = 'medium',
-  controlsSkin = 'standard',
-  icon = <div />,
-  className = '',
+  dataHook,
+  arrowSize,
+  controlsSkin,
+  icon,
+  className,
   disabled = false,
   ...remainingProps
 }) => (
