@@ -72,10 +72,10 @@ export default class Roundabout extends React.Component {
   setImgOnLoadHandlers = () => {
     [...this.roundabout.children].forEach((child) => {
       const childImages = [...child.getElementsByTagName('img')];
-      childImages.forEach((img) => {
+      childImages.forEach((image) => {
         this.loadingImagesCount++;
-        img.onload = this.onImageLoad;
-        img.onerror = this.onImageLoad;
+        image.onload = this.onImageLoad;
+        image.onerror = this.onImageLoad;
       });
     });
   };
@@ -117,7 +117,7 @@ export default class Roundabout extends React.Component {
       return Promise.reject('No children to slide to');
     }
     if (!this.roundabout) {
-      return Promise.reject('The Roundabout is not mounted');
+      return Promise.reject('The roundabout is not mounted');
     }
     const {
       afterChange,
@@ -145,7 +145,7 @@ export default class Roundabout extends React.Component {
       beforeChange(index);
     }
     this.setState({ isAnimating: true, activeIndex: slideIndex });
-    return new Promise((res, _) => {
+    return new Promise((res) => {
       if (immediate) {
         this.roundabout.scrollLeft = children[slideIndex].offsetLeft;
         return res();
@@ -170,7 +170,7 @@ export default class Roundabout extends React.Component {
           return afterChange(slideIndex);
         }
       })
-      .catch((_) => {
+      .catch(() => {
         this.setVisibleVehicles();
         this.setState({ isAnimating: false });
       });
